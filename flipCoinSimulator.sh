@@ -1,79 +1,38 @@
 #!/bin/bash -x
-coin1=0
-coin2=0
-HH=0
-TT=0
-TH=0
-HT=0
+
+echo "welcome"
+read -p "how much time you flip coin " flips
+read -p "how many coins " coinNum
+declare -A result
+
 headCount=0
 tailCount=0
-randomNum=0
-count=0
-count1=0
-declare -A coinCount
-read -p "how many number will the coin be flipped" flips
-function singletCoinComb()
-{
-	while [ $count -lt $flips ]	
-	do	
-		randNum=$((RANDOM%2)) 
-                 if [ $randNum -eq 1 ]
- 		then
-   			(( headCount++ ))
+TT=0
+HH=0
+TH=0
+HT=0
 
-		else
-			(( tailCount++ ))
-		fi
-   			(( count++ ))
-	done
-}
-function  singletInfo()
-{
- 	coinCount[head]=$headCount
- 	coinCount[tail]=$tailCount
- 	echo "head and tails are " ${sounds[*]}
- 	headPerCount=$(( ($headCount*100)/$1 ))
- 	tailPerCount=$(( ($tailCount*100)/$1 ))
- }
-function flip()
-{
-	coin1=$1
-	coin2=$2
-}
-function doubletCoinComb()
-{
-	while [ $count1 -lt $flips ]
-	do
-		flip $((RANDOM%2)) $((RANDOM%2)) 
-		if [ $coin1 -eq 0 ]  && [ $coin2 -eq 0 ]
-		then
-			(( HH++ ))
-		elif [ $coin1 -eq 0 ] && [ $coin2 -eq 1 ]
-		then
-			(( HT++ ))
-		elif [ $coin1 -eq 1 ] && [ $coin2 -eq 0 ]
-		then
-			(( TH++ ))
-		else
-			(( TT++ ))
-		fi
-		(( count1++ ))
-	done
-}
-function PercentageCoin()
-{
-       	HHPercount=$(( ($HH*100)/$1 ))
-        HTPercount=$(( ($HT*100)/$1 ))
-        THPercount=$(( ($TH*100)/$1 ))
-        TTPercount=$(( ($TT*100)/$1 ))
-}
-for(( i=0; i <= 1; i++ ))
-        do
-        {
-                #singletCoinComb
-                #singletInfo $(( $count ))
-                doubletCoinComb
-                PercentageCoin $(( $count1 ))
-        }
+function coin() {
+for (( i=1; i<=$flips; i++ ))
+do
+string=""
+ for(( j=0; j<$coinNum; j++ ))
+ do
+    coinTurn=$(( RANDOM % 2 ))
 
+      if [ $coinTurn == 1 ]
+then
+   string=$string"H"
+           headCount=$(( $headCount + 1 ))
+else
+            string=$string"T"
+           tailCount=$(( $tailCount + 1 ))
+fi
+ done
+echo final key : $string
+result["$string"]=$(( ${result["$string"]} + 1 ))   
 done
+}
+coin
+echo ${!result[@]}
+echo ${result[@]}
