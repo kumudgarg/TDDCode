@@ -6,6 +6,7 @@ win=0
 loose=0
 read -p "Insert days for playing" day
 read -p "number of game" game
+read -p "Insert win/loose percent" stakepercent
 for (( i=0; i < $day; i++ ))
 do
 	(( stake=$(( stake+100 )) ))
@@ -24,7 +25,20 @@ do
 			(( loose++ ))
 			(( stake-- ))	
 		fi
-		
+		stackAmountWin=$(( stackpercent + 100 ))
+		stackAmountLoose=$(( 100 - stackpercent ))
+		winLimit=$(( ($stake * $stackAmountWin) / 100 ))
+		LooseLimit=$(( ($stake * $stackAmountLoose) / 100 ))
+		if [ $win -eq $winLimit ]
+        	then 
+                	break
+		elif [ $loose -eq $LooseLimit ]
+		then
+			break
+		else
+                	continue
+        	fi
+
 	done
 done
 echo "total bets are $bets " 
