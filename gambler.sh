@@ -1,10 +1,12 @@
-#!/bin/bash -x
+#!/bin/bash 
 bets=0
 stake=0
 bets=0
 win=0
 loose=0
-k=0
+countWin=0
+countLoose=0
+declare -A  dayNum
 read -p "Insert days for playing" day
 read -p "number of game" game
 read -p "Insert win/loose percent" stakepercent
@@ -39,11 +41,14 @@ do
 	        else
 	                echo "continue gambler's day"
 	        fi
-
-	
 	done
+	countWin=$(( $win - $countWin ))
+	countLoose=$(( $loose - $countLoose ))
+	dayNum["Day $i"]="day $i -> win=$countWin, loose=$countLoose : "
+	
 done
 echo "total bets are $bets " 
 echo "total stake is $stake "
 echo "total win times $win "
-echo "total  loose times $loose "
+echo "total loose times $loose "
+echo "All 20 day win loose amount are" ${dayNum[@]} 
